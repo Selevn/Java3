@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Book List</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1>App List</h1>
+<h2><a href="addapp">Add new app</a></h2>
+<br/><br/>
+<div class="container">
+    <table class="container" border="1">
+        <tr>
+            <th><h1>Title</h1></th>
+            <th><h1>Author</h1></th>
+        </tr>
+        <tr th:each="app : ${apps}">
+            <td th:utext="${app.name}">...</td>
+            <td th:utext="${app.description}">...</td>
+            <td>
+                <a th:href="@{/editapp(name=${app.name})}">Edit</a>
+            </td>
+            <td>
+                <input th:id="'nameForDelete'+${app.name}" type="text" style="display: none" th:value="${app.name}" name="name"/>
+                <input class="button-main-page" type="button" th:name="'nameForDelete'+${app.name}" value="Delete"
+                       onclick="(function remove(event){
+                        fetch(
+                            '/deleteApp?name='+document.getElementById(event.target.name).value,
+                            {
+                                method:'DELETE',
+                            }
+                        )
+                        .then(res => res.text())
+                        .then((response)=>{
+                            document.querySelector('html').innerHTML  = response
+                        })
+                    })(event)"/>
+
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

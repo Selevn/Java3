@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Edit App</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/style.css}"/>
+</head>
+<body>
+<div class="container">
+    <h1>Edit app:</h1>
+    <form th:action="@{/editapp}"
+          th:object="${editForm}" method="POST">
+        <p>Name:
+            <input type="text" th:value="${name}" name="name" />
+        </p>
+        <p>Description:
+            <input type="text" th:value="${desc}" name="description"/>
+        </p>
+        <input type="text" style="display: none" th:value="${name}" name="prevName"/>
+
+        <input class ="button-main-page" type="submit" value="Save" />
+    </form>
+</div>
+<div th:if="${errorMessage}" th:utext="${errorMessage}"
+     style="color:red;font-style:italic;">
+</div>
+</body>
