@@ -10,6 +10,16 @@ public abstract class AbstractEntity {
     private Integer _likes;
     private User _creator;
 
+    public String get_image() {
+        return _image;
+    }
+
+    public void set_image(String _image) {
+        this._image = _image;
+    }
+
+    private String _image;
+
     public AbstractEntity(Integer _id, String _name, String _description, User _creator, ArrayList<Comment> _comments, Integer _likes) {
         this._id = _id;
         this._name = _name;
@@ -61,6 +71,20 @@ public abstract class AbstractEntity {
 
     public void set_likes(Integer _likes) {
         this._likes = _likes;
+    }
+
+    public boolean addLike() {
+        this._likes+=1;
+        return true;
+    }
+    public boolean removeLike() {
+        this._likes-=1;
+        return true;
+    }
+
+    public boolean addComment(Comment comment){
+        this._comments.add(comment);
+        return true;
     }
 
 }

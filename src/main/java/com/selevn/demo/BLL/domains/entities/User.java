@@ -11,6 +11,7 @@ public class User {
     private ArrayList<Recipe> _likedRecipes;
     private ArrayList<CookBook> _createdCookBooks;
     private ArrayList<Recipe> _createdRecipes;
+    private String _image;
 
     public User(Integer _id, String _name, String _lastName, String _description, ArrayList<CookBook> _likedCookBooks, ArrayList<Recipe> _likedRecipes, ArrayList<CookBook> _createdCookBooks, ArrayList<Recipe> _createdRecipes) {
         this._id = _id;
@@ -21,6 +22,14 @@ public class User {
         this._likedRecipes = _likedRecipes;
         this._createdCookBooks = _createdCookBooks;
         this._createdRecipes = _createdRecipes;
+    }
+
+    public String get_image() {
+        return _image;
+    }
+
+    public void set_image(String _image) {
+        this._image = _image;
     }
 
     public Integer get_id() {
@@ -86,4 +95,22 @@ public class User {
     public void set_createdRecipes(ArrayList<Recipe> _createdRecipes) {
         this._createdRecipes = _createdRecipes;
     }
+
+    public boolean CreateCookBook(CookBook book){
+        this._createdCookBooks.add(book);
+        return true;
+    }
+    public boolean CreateRecipe(Recipe recipe){
+        this._createdRecipes.add(recipe);
+        return true;
+    }
+    public boolean LikeCookBook(CookBook book){
+        this._likedCookBooks.add(book);
+        return book.addLike();
+    }
+    public boolean LikeRecipe(Recipe recipe){
+        this._likedRecipes.add(recipe);
+        return recipe.addLike();
+    }
+
 }
