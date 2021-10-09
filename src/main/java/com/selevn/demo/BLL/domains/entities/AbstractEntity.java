@@ -10,6 +10,16 @@ public abstract class AbstractEntity {
     private Integer _likes;
     private User _creator;
 
+    public Integer get_views() {
+        return _views;
+    }
+
+    public void set_views(Integer _views) {
+        this._views = _views;
+    }
+
+    private Integer _views;
+
     public String get_image() {
         return _image;
     }
