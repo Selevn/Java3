@@ -106,11 +106,20 @@ public class User {
     }
     public boolean LikeCookBook(CookBook book){
         this._likedCookBooks.add(book);
-        return book.addLike();
+        return true;
     }
     public boolean LikeRecipe(Recipe recipe){
         this._likedRecipes.add(recipe);
-        return recipe.addLike();
+        return true;
     }
+    public boolean DislikeCookBook(CookBook book){
+        this._likedCookBooks.remove(book);
+        return true;
+    }
+    public boolean DislikeRecipe(Recipe recipe){
+        this._likedRecipes.remove(recipe);
+        return true;
+    }
+
 
 }

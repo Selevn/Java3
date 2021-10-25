@@ -1,10 +1,12 @@
 package com.selevn.demo.controller;
 
+import com.selevn.demo.entities.UserService;
 import com.selevn.demo.forms.AppForm;
 import com.selevn.demo.forms.DeleteForm;
 import com.selevn.demo.forms.EditForm;
 import com.selevn.demo.model.App;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,9 @@ import java.util.List;
 @Controller
 @RequestMapping
 public class AppController {
+    @Autowired
+    public UserService userService;
+
     private static List<App> apps = new ArrayList<App>();
 
     static {
@@ -41,6 +46,8 @@ public class AppController {
         modelAndView.setViewName("index");
         model.addAttribute("message", message);
         log.info("/index was called");
+
+        System.out.println(userService.getById(3).getFirstName());
         return modelAndView;
     }
 

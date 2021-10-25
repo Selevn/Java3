@@ -87,8 +87,13 @@ public abstract class AbstractEntity {
         this._likes+=1;
         return true;
     }
+
     public boolean removeLike() {
         this._likes-=1;
+        return true;
+    }
+    public boolean addView() {
+        this._views+=1;
         return true;
     }
 

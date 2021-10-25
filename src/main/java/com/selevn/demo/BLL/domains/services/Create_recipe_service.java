@@ -9,6 +9,10 @@ import com.selevn.demo.BLL.domains.ports.out.db.uploaders.Upload_recipe_port;
 public class Create_recipe_service implements Create_recipe_use_case {
     private Upload_recipe_port _uploadRecipe;
 
+    public Create_recipe_service(Upload_recipe_port _uploadRecipe) {
+        this._uploadRecipe = _uploadRecipe;
+    }
+
     @Override
     public boolean Create_recipe(Create_recipe_command command) {
         return false;

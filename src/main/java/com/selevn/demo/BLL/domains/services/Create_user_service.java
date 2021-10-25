@@ -8,6 +8,10 @@ public class Create_user_service implements Create_user_use_case {
 
     private Upload_user_port _upload_user;
 
+    public Create_user_service(Upload_user_port _upload_user) {
+        this._upload_user = _upload_user;
+    }
+
     @Override
     public boolean Create_user(Create_user_command command) {
         return _upload_user.upload_user(command.get_user());

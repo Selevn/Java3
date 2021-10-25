@@ -6,6 +6,11 @@ import com.selevn.demo.BLL.domains.ports.out.db.uploaders.Upload_cookBook_port;
 
 public class Create_cookBook_service implements Create_cookBook_use_case {
     private Upload_cookBook_port _uploadCookBook;
+
+    public Create_cookBook_service(Upload_cookBook_port _uploadCookBook) {
+        this._uploadCookBook = _uploadCookBook;
+    }
+
     @Override
     public boolean Create_cookBook(Create_cookBook_command book_command) {
 
