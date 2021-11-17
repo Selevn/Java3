@@ -47,6 +47,30 @@ public class GetController {
         return map;
     }
 
+    @GetMapping(value = {"/recipes"})
+    @ResponseBody
+    public Map<String, Object> getRecipes(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) Integer cookTime,
+            @RequestParam(required = false) String hideMy,
+            @RequestParam(required = false) String searchString
+    ) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if(page == null)
+            page = 1;
+        var recipes = uof.getRecipes(page-1,
+                SortMapper.sortParse(sortBy),
+                cookTime,
+                HideMyParser.parse(hideMy),
+                searchString);
+
+        map.put("docs", recipes.docs);
+        map.put("total", recipes.total);
+        map.put("nextPage", recipes.nextPage);
+        map.put("hasNextPage", recipes.hasNext);
+        return map;
+    }
     /*
     @GetMapping(value = {"/api/getCookBook"})
     public ModelAndView personList(Model model) {

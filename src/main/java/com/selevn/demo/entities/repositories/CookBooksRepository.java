@@ -1,7 +1,6 @@
 package com.selevn.demo.entities.repositories;
 
 import com.selevn.demo.entities.CookbooksViewEntity;
-import com.sun.istack.Nullable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -23,7 +22,7 @@ public interface CookBooksRepository extends JpaRepository<CookbooksViewEntity, 
                                      Integer hidemy,
                                      String searchString);
 
-    @Query(value = "select * from get_cookbooks_count(?1,?2,?3,CAST(?4 as varbit),?5,CAST(?6 as varchar))", nativeQuery = true)
+    @Query(value = "select * from get_cookbooks(?1,?2,?3,CAST(?4 as varbit),?5,CAST(?6 as varchar))", nativeQuery = true)
     int getAllCount(Integer count,
                                      Integer page,
                                      Integer sortby,
