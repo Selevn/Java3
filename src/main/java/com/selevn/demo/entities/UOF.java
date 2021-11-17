@@ -3,6 +3,7 @@ package com.selevn.demo.entities;
 
 import com.selevn.demo.entities.repositories.RecipesRepository;
 import com.selevn.demo.entities.repositories.CookBooksRepository;
+import com.selevn.demo.entities.repositories.SingleRecipeRepository;
 import com.selevn.demo.entities.wrapper.EntityWrapper;
 import com.selevn.demo.utils.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ public class UOF {
     private CookBooksRepository cookBooksRepository;
     @Autowired
     private RecipesRepository recipesRepository;
+    @Autowired
+    private SingleRecipeRepository singleRecipeRepository;
+
 
     public EntityWrapper<CookbooksViewEntity> getCookBooks(Integer page,
                                             Integer sortby,
@@ -91,5 +95,9 @@ public class UOF {
         recipes.hasNext = Pager.hasNext(page,recipes.total);
         recipes.nextPage = page+2;
         return recipes;
+    }
+
+    public SingleRecipeViewEntity getSingleRecipe(Integer id){
+        return singleRecipeRepository.getSingleRecipeViewEntityById(id);
     }
 }

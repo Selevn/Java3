@@ -6,10 +6,7 @@ import com.selevn.demo.utils.SortMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -69,6 +66,17 @@ public class GetController {
         map.put("total", recipes.total);
         map.put("nextPage", recipes.nextPage);
         map.put("hasNextPage", recipes.hasNext);
+        return map;
+    }
+
+    @GetMapping(value = {"/recipes/{id}"})
+    @ResponseBody
+    public Map<String, Object> getSingleRecipe(
+            @PathVariable("id") String id
+    ) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        var recipe = uof.getSingleRecipe(Integer.parseInt(id));
+        map.put("docs", recipe);
         return map;
     }
     /*

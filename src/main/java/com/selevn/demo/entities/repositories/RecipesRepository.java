@@ -1,6 +1,5 @@
 package com.selevn.demo.entities.repositories;
 
-import com.selevn.demo.entities.CookbooksViewEntity;
 import com.selevn.demo.entities.RecipesViewEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
