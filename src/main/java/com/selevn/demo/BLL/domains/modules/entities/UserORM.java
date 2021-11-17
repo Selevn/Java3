@@ -1,10 +1,10 @@
-package com.selevn.demo.entities;
+package com.selevn.demo.BLL.domains.modules.entities;
 
 import javax.persistence.*;
 
-@Table(name = "users", schema = "public")
+@Table(name = "users")
 @Entity
-public class User {
+public class UserORM {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "_id", nullable = false)
