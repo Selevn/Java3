@@ -24,4 +24,26 @@ public interface RecipesRepository extends JpaRepository<RecipesViewEntity, Inte
                     Integer hidemy,
                     String searchString);
 
+
+    @Query(value = "select * from get_user_recipes(?1,?2,?3)", nativeQuery = true)
+    List<RecipesViewEntity> getUserRecipes(Integer id,
+                                   Integer count,
+                                   Integer page);
+
+    @Query(value = "select * from get_user_recipes_count(?1,?2,?3)", nativeQuery = true)
+    int getUserRecipesCount(Integer id,
+                    Integer count,
+                    Integer page);
+
+    @Query(value = "select * from get_user_liked_recipes(?1,?2,?3)", nativeQuery = true)
+    List<RecipesViewEntity> getUserLikedRecipes(Integer id,
+                                   Integer count,
+                                   Integer page);
+
+    @Query(value = "select * from get_user_liked_recipes_count(?1,?2,?3)", nativeQuery = true)
+    int getUserLikedRecipesCount(Integer id,
+                    Integer count,
+                    Integer page);
+
+
 }

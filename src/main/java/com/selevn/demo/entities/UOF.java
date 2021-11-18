@@ -1,9 +1,7 @@
 package com.selevn.demo.entities;
 
 
-import com.selevn.demo.entities.repositories.RecipesRepository;
-import com.selevn.demo.entities.repositories.CookBooksRepository;
-import com.selevn.demo.entities.repositories.SingleRecipeRepository;
+import com.selevn.demo.entities.repositories.*;
 import com.selevn.demo.entities.wrapper.EntityWrapper;
 import com.selevn.demo.utils.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,13 @@ public class UOF {
     private RecipesRepository recipesRepository;
     @Autowired
     private SingleRecipeRepository singleRecipeRepository;
+    @Autowired
+    private SingleCookBookRepository singleCookBookRepository;
+    @Autowired
+    private CommentsRepository commentsRepository;
+    @Autowired
+    private UserRepository userRepository;
+
 
 
     public EntityWrapper<CookbooksViewEntity> getCookBooks(Integer page,
@@ -100,4 +105,59 @@ public class UOF {
     public SingleRecipeViewEntity getSingleRecipe(Integer id){
         return singleRecipeRepository.getSingleRecipeViewEntityById(id);
     }
+    public SingleCookbookViewEntity getSingleCookBook(Integer id){
+        return singleCookBookRepository.getSingleCookbookViewEntityById(id);
+    }
+    public EntityWrapper<CommentsViewEntity> getComments(Integer id,
+                                                         Integer type,
+                                                         Integer page){
+        var comments = new EntityWrapper<CommentsViewEntity>();
+        comments.docs = commentsRepository.getComments(id,type,15,page);
+        comments.total = commentsRepository.getCommentsCount(id,type);
+        comments.hasNext = Pager.hasNext(page,comments.total);
+        comments.nextPage = page+2;
+        return comments;
+    }
+    public UserNoPrivateViewEntity getUser(Integer id){
+        return userRepository.getUserNoPrivateViewEntityById(id);
+    }
+    public EntityWrapper<CookbooksViewEntity> getUserCookBooks(Integer id, Integer page){
+        EntityWrapper<CookbooksViewEntity> books = new EntityWrapper<CookbooksViewEntity>();
+        books.total = cookBooksRepository.getUserCookBooksCount(id,15, page);
+        books.docs = cookBooksRepository.getUserCookBooks(id,15, page);
+
+        books.hasNext = Pager.hasNext(page,books.total);
+        books.nextPage = page+2;
+        return books;
+    }
+    public EntityWrapper<CookbooksViewEntity> getUserLikedCookBooks(Integer id, Integer page){
+            EntityWrapper<CookbooksViewEntity> books = new EntityWrapper<CookbooksViewEntity>();
+            books.total = cookBooksRepository.getUserLikedCookBooksCount(id,15, page);
+            books.docs = cookBooksRepository.getUserLikedCookBooks(id,15, page);
+
+            books.hasNext = Pager.hasNext(page,books.total);
+            books.nextPage = page+2;
+            return books;
+        }
+
+    public EntityWrapper<RecipesViewEntity> getUserRecipes(Integer id, Integer page){
+        EntityWrapper<RecipesViewEntity> recipes = new EntityWrapper<RecipesViewEntity>();
+        recipes.total = recipesRepository.getUserRecipesCount(id,15, page);
+        recipes.docs = recipesRepository.getUserRecipes(id,15, page);
+
+        recipes.hasNext = Pager.hasNext(page,recipes.total);
+        recipes.nextPage = page+2;
+        return recipes;
+    }
+    public EntityWrapper<RecipesViewEntity> getUserLikedRecipes(Integer id, Integer page){
+        EntityWrapper<RecipesViewEntity> recipes = new EntityWrapper<RecipesViewEntity>();
+        recipes.total = recipesRepository.getUserLikedRecipesCount(id,15, page);
+        recipes.docs = recipesRepository.getUserLikedRecipes(id,15, page);
+        recipes.hasNext = Pager.hasNext(page,recipes.total);
+        recipes.nextPage = page+2;
+        return recipes;
+    }
+
+
+
 }

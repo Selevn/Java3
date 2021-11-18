@@ -1,19 +1,25 @@
 package com.selevn.demo.controller;
 
+import com.selevn.demo.entities.SingleCookbookViewEntity;
+import com.selevn.demo.entities.SingleRecipeViewEntity;
 import com.selevn.demo.entities.UOF;
+import com.selevn.demo.entities.UserNoPrivateViewEntity;
 import com.selevn.demo.utils.HideMyParser;
 import com.selevn.demo.utils.SortMapper;
+import com.selevn.demo.utils.TypeParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/api/get",produces = MediaType.APPLICATION_JSON_VALUE)
-public class GetController {
+public class GetItemController {
 
     @Autowired
     private UOF uof;
@@ -71,38 +77,59 @@ public class GetController {
 
     @GetMapping(value = {"/recipes/{id}"})
     @ResponseBody
-    public Map<String, Object> getSingleRecipe(
+    public List<SingleRecipeViewEntity> getSingleRecipe(
             @PathVariable("id") String id
     ) {
-        Map<String, Object> map = new HashMap<String, Object>();
         var recipe = uof.getSingleRecipe(Integer.parseInt(id));
-        map.put("docs", recipe);
+        var list = new ArrayList<SingleRecipeViewEntity>();
+        list.add(recipe);
+        return list;
+    }
+    @GetMapping(value = {"/cookbooks/{id}"})
+    @ResponseBody
+    public List<SingleCookbookViewEntity> getSingleCookBook(
+            @PathVariable("id") String id
+    ) {
+        var cookbook = uof.getSingleCookBook(Integer.parseInt(id));
+        var list = new ArrayList<SingleCookbookViewEntity>();
+        list.add(cookbook);
+        return list;
+    }
+
+
+    @GetMapping(value = {"/users/{id}"})
+    @ResponseBody
+    public List<UserNoPrivateViewEntity> getUser(
+            @PathVariable("id") String id
+    ) {
+        var user = uof.getUser(
+                Integer.parseInt(id)
+        );
+        var users = new ArrayList<UserNoPrivateViewEntity>();
+        users.add(user);
+        return users;
+    }
+
+    @GetMapping(value = {"/comments"})
+    @ResponseBody
+    public Map<String, Object> getComments(
+            @RequestParam(required = true) String type,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = true) Integer itemId
+    ) {
+        if(page == null)
+            page = 1;
+
+        var comments = uof.getComments(
+                itemId, TypeParser.parse(type),page-1
+        );
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("docs", comments.docs);
+        map.put("total", comments.total);
+        map.put("nextPage", comments.nextPage);
+        map.put("hasNextPage", comments.hasNext);
         return map;
     }
-    /*
-    @GetMapping(value = {"/api/getCookBook"})
-    public ModelAndView personList(Model model) {
-        DeleteForm deleteForm = new DeleteForm();
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("applist");
-        model.addAttribute("deleteForm", deleteForm);
-        return modelAndView;
-    }
-    @GetMapping(value = {"/api/getRecipes"})
-    public ModelAndView personList(Model model) {
-        DeleteForm deleteForm = new DeleteForm();
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("applist");
-        model.addAttribute("deleteForm", deleteForm);
-        return modelAndView;
-    }
-    @GetMapping(value = {"/api/getRecipe"})
-    public ModelAndView personList(Model model) {
-        DeleteForm deleteForm = new DeleteForm();
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("applist");
-        model.addAttribute("deleteForm", deleteForm);
-        return modelAndView;
-    }*/
+
 
 }
