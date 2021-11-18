@@ -2,8 +2,10 @@ package com.selevn.demo.entities.repositories;
 
 import com.selevn.demo.entities.CookbooksViewEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 
@@ -54,5 +56,15 @@ public interface CookBooksRepository extends JpaRepository<CookbooksViewEntity, 
     int getUserLikedCookBooksCount(Integer id,
                               Integer count,
                               Integer page);
+    @Transactional
+    @Modifying
+    @Query(value = "call like_cookbook(?1,?2)", nativeQuery = true)
+    void likeCookBook(Integer userId,
+                      Integer bookId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "call visit_cookbook(?1)", nativeQuery = true)
+    void visitCookBook(Integer cookbookId);
 
 }

@@ -2,8 +2,10 @@ package com.selevn.demo.entities.repositories;
 
 import com.selevn.demo.entities.RecipesViewEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 
@@ -44,6 +46,19 @@ public interface RecipesRepository extends JpaRepository<RecipesViewEntity, Inte
     int getUserLikedRecipesCount(Integer id,
                     Integer count,
                     Integer page);
+
+    @Transactional
+    @Modifying
+    @Query(value = "call like_recipe(?1,?2)", nativeQuery = true)
+    void likeRecipe(Integer userId,
+                    Integer recipeId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "call visit_recipe(?1)", nativeQuery = true)
+    void visitRecipe(Integer recipeId);
+
+
 
 
 }

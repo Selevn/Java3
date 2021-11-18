@@ -158,6 +158,37 @@ public class UOF {
         return recipes;
     }
 
-
-
+    public boolean likeCookBook(Integer userId, Integer bookId){
+        try{
+            cookBooksRepository.likeCookBook(userId,bookId);
+            return true;
+        }
+        catch (Exception e){
+            System.out.println(e);
+            return false;
+        }
+    }
+    public boolean likeRecipe(Integer userId, Integer recipeId){
+        try{
+            recipesRepository.likeRecipe(userId,recipeId);
+            return true;
+        }
+        catch (Exception e){
+            System.out.println(e);
+            return false;
+        }
+    }
+    public boolean visitItem(Integer itemId, Integer type){
+        try{
+        if(type == 0)
+            recipesRepository.visitRecipe(itemId);
+        if(type != 0)
+            cookBooksRepository.visitCookBook(itemId);
+        return true;
+        }
+        catch (Exception e){
+            System.out.println(e);
+            return false;
+        }
+    }
 }
