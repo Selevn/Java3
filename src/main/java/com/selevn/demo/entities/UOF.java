@@ -92,10 +92,24 @@ public class UOF {
 
         if(searchString == null)
             searchString = "";
-
+        if(cookTime == null)
+            cookTime = 1000;
 
         recipes.total = recipesRepository.getAllCount(15, page, sortby, cookTime, hidemy, searchString);
         recipes.docs = recipesRepository.getAll(15, page, sortby, cookTime, hidemy, searchString);
+
+        recipes.hasNext = Pager.hasNext(page,recipes.total);
+        recipes.nextPage = page+2;
+        return recipes;
+    }
+    public EntityWrapper<RecipesViewEntity> getRecipesByCookBook(Integer page,
+                                                                 Integer cookbookId) {
+        EntityWrapper<RecipesViewEntity> recipes = new EntityWrapper<RecipesViewEntity>();
+        if(page == null)
+            page = 0;
+
+        recipes.total = recipesRepository.getRecipesByCookBookCount(cookbookId,15, page);
+        recipes.docs = recipesRepository.getRecipesByCookBook(cookbookId,15, page);
 
         recipes.hasNext = Pager.hasNext(page,recipes.total);
         recipes.nextPage = page+2;
@@ -105,6 +119,7 @@ public class UOF {
     public SingleRecipeViewEntity getSingleRecipe(Integer id){
         return singleRecipeRepository.getSingleRecipeViewEntityById(id);
     }
+
     public SingleCookbookViewEntity getSingleCookBook(Integer id){
         return singleCookBookRepository.getSingleCookbookViewEntityById(id);
     }
@@ -190,5 +205,14 @@ public class UOF {
             System.out.println(e);
             return false;
         }
+    }
+    public int getTotalUsersCount(){
+        return userRepository.getTotalUsersCount();
+    }
+    public int getTotalRecipesCount(){
+        return recipesRepository.getTotalRecipesCount();
+    }
+    public int getTotalCookBooksCount(){
+        return cookBooksRepository.getTotalCookBooksCount();
     }
 }

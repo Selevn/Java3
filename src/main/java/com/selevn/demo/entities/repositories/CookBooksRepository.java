@@ -24,7 +24,7 @@ public interface CookBooksRepository extends JpaRepository<CookbooksViewEntity, 
                                      Integer hidemy,
                                      String searchString);
 
-    @Query(value = "select * from get_cookbooks(?1,?2,?3,CAST(?4 as varbit),?5,CAST(?6 as varchar))", nativeQuery = true)
+    @Query(value = "select * from get_cookbooks_count(?1,?2,?3,CAST(?4 as varbit),?5,CAST(?6 as varchar))", nativeQuery = true)
     int getAllCount(Integer count,
                                      Integer page,
                                      Integer sortby,
@@ -67,4 +67,6 @@ public interface CookBooksRepository extends JpaRepository<CookbooksViewEntity, 
     @Query(value = "call visit_cookbook(?1)", nativeQuery = true)
     void visitCookBook(Integer cookbookId);
 
+    @Query(value = "select * from get_cookbooks_count()", nativeQuery = true)
+    int getTotalCookBooksCount();
 }

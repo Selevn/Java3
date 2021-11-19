@@ -2,6 +2,8 @@ package com.selevn.demo.utils;
 
 public class SortMapper {
     public static int sortParse(String inputSort){
+        if(inputSort == null)
+            return 0;
         if(inputSort.equals("mostPopular"))
             return 1;
         if(inputSort.equals("newest"))

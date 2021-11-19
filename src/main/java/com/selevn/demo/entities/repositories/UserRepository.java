@@ -10,4 +10,7 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<UserNoPrivateViewEntity, Integer>{
     UserNoPrivateViewEntity getUserNoPrivateViewEntityById(Integer id);
+
+    @Query(value = "select * from get_users_count()", nativeQuery = true)
+    int getTotalUsersCount();
 }

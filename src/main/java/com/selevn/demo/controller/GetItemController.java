@@ -1,9 +1,7 @@
 package com.selevn.demo.controller;
 
-import com.selevn.demo.entities.SingleCookbookViewEntity;
-import com.selevn.demo.entities.SingleRecipeViewEntity;
-import com.selevn.demo.entities.UOF;
-import com.selevn.demo.entities.UserNoPrivateViewEntity;
+import com.selevn.demo.entities.*;
+import com.selevn.demo.entities.wrapper.EntityWrapper;
 import com.selevn.demo.utils.HideMyParser;
 import com.selevn.demo.utils.SortMapper;
 import com.selevn.demo.utils.TypeParser;
@@ -57,16 +55,22 @@ public class GetItemController {
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false) Integer cookTime,
             @RequestParam(required = false) String hideMy,
-            @RequestParam(required = false) String searchString
+            @RequestParam(required = false) String searchString,
+            @RequestParam(required = false) String cookbookId
     ) {
+        EntityWrapper<RecipesViewEntity> recipes;
         Map<String, Object> map = new HashMap<String, Object>();
         if(page == null)
             page = 1;
-        var recipes = uof.getRecipes(page-1,
+        if(cookbookId != null){
+            recipes = uof.getRecipesByCookBook(page-1, Integer.parseInt(cookbookId));
+        }
+        else
+        {   recipes = uof.getRecipes(page-1,
                 SortMapper.sortParse(sortBy),
                 cookTime,
                 HideMyParser.parse(hideMy),
-                searchString);
+                searchString);}
 
         map.put("docs", recipes.docs);
         map.put("total", recipes.total);

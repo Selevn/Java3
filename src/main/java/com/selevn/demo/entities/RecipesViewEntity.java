@@ -6,8 +6,8 @@ import java.sql.Date;
 @Entity
 @Table(name = "recipes_view", schema = "public", catalog = "cookbook")
 public class RecipesViewEntity {
-    @Id
-    @Column(name = "_id", nullable = false)
+
+
     private Integer id;
     private Long views;
     private String image;
@@ -25,6 +25,7 @@ public class RecipesViewEntity {
     private String lastName;
 
     @Basic
+    @Id
     @Column(name = "_id")
     public Integer getId() {
         return id;

@@ -47,6 +47,16 @@ public interface RecipesRepository extends JpaRepository<RecipesViewEntity, Inte
                     Integer count,
                     Integer page);
 
+    @Query(value = "select * from get_recipes_by_cookbook(?3,?2,?1)", nativeQuery = true)
+    List<RecipesViewEntity> getRecipesByCookBook(Integer id,
+                                                Integer count,
+                                                Integer page);
+
+    @Query(value = "select * from get_recipes_by_cookbook_count(?3,?2,?1)", nativeQuery = true)
+    int getRecipesByCookBookCount(Integer id,
+                                 Integer count,
+                                 Integer page);
+
     @Transactional
     @Modifying
     @Query(value = "call like_recipe(?1,?2)", nativeQuery = true)
@@ -58,7 +68,6 @@ public interface RecipesRepository extends JpaRepository<RecipesViewEntity, Inte
     @Query(value = "call visit_recipe(?1)", nativeQuery = true)
     void visitRecipe(Integer recipeId);
 
-
-
-
+    @Query(value = "select * from get_total_recipes_count()", nativeQuery = true)
+    int getTotalRecipesCount();
 }
