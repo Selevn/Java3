@@ -1,6 +1,7 @@
 package com.selevn.demo.entities.repositories;
 
 import com.selevn.demo.entities.CookbooksViewEntity;
+import com.selevn.demo.entities.RecipesViewEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -69,4 +70,7 @@ public interface CookBooksRepository extends JpaRepository<CookbooksViewEntity, 
 
     @Query(value = "select * from get_cookbooks_count()", nativeQuery = true)
     int getTotalCookBooksCount();
+
+    @Query(value = "select * from get_all_user_liked_cookbooks(?1)", nativeQuery = true)
+    List<CookbooksViewEntity> getAllUserLikedCookbooks(Integer userid);
 }

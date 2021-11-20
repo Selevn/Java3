@@ -1,10 +1,10 @@
-package com.selevn.demo.BLL.domains.modules.entities;
+package com.selevn.demo.entities;
 
 import javax.persistence.*;
 
 @Table(name = "users")
 @Entity
-public class UserORM {
+public class SingleUserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "_id", nullable = false)
@@ -22,10 +22,10 @@ public class UserORM {
     @Column(name = "image", nullable = false)
     private String image;
 
-    @Column(name = "password", nullable = false, length = 50)
+    @Column(name = "password", nullable = false, length = 128)
     private String password;
 
-    @Column(name = "salt", length = 50)
+    @Column(name = "salt", length = 64)
     private String salt;
 
     @Column(name = "\"desc\"")

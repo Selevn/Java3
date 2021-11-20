@@ -13,4 +13,5 @@ public interface UserRepository extends JpaRepository<UserNoPrivateViewEntity, I
 
     @Query(value = "select * from get_users_count()", nativeQuery = true)
     int getTotalUsersCount();
+
 }

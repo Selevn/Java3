@@ -70,4 +70,7 @@ public interface RecipesRepository extends JpaRepository<RecipesViewEntity, Inte
 
     @Query(value = "select * from get_total_recipes_count()", nativeQuery = true)
     int getTotalRecipesCount();
+
+    @Query(value = "select * from get_all_user_liked_recipes(?1)", nativeQuery = true)
+    List<RecipesViewEntity> getAllUserLikedRecipes(Integer userid);
 }

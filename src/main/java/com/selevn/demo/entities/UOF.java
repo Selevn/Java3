@@ -7,6 +7,9 @@ import com.selevn.demo.utils.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Repository
 public class UOF {
     @Autowired
@@ -21,7 +24,8 @@ public class UOF {
     private CommentsRepository commentsRepository;
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private SingleUserEntityRepository singleUserEntityRepository;
 
 
     public EntityWrapper<CookbooksViewEntity> getCookBooks(Integer page,
@@ -215,4 +219,14 @@ public class UOF {
     public int getTotalCookBooksCount(){
         return cookBooksRepository.getTotalCookBooksCount();
     }
+    public SingleUserEntity getUserForLogin(String email){
+        return singleUserEntityRepository.getSingleUserEntityByEmail(email);
+    }
+    public List<Integer> getAllUserLikedRecipesIds(Integer id){
+        return recipesRepository.getAllUserLikedRecipes(id).stream().map(RecipesViewEntity::getId).collect(Collectors.toList());
+    }
+    public List<Integer> getAllUserLikedCookBooksIds(Integer id){
+        return cookBooksRepository.getAllUserLikedCookbooks(id).stream().map(CookbooksViewEntity::getId).collect(Collectors.toList());
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.selevn.demo.controller;
 
 import com.selevn.demo.BLL.domains.entities.CookBook;
-import com.selevn.demo.BLL.domains.modules.LoadCookBookAdapter;
 import com.selevn.demo.forms.AppForm;
 import com.selevn.demo.forms.DeleteForm;
 import com.selevn.demo.forms.EditForm;
