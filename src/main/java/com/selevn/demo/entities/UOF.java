@@ -239,4 +239,9 @@ public class UOF {
         }
         return true;
     }
+
+    public boolean createUser(String email,String hash,String salt){
+        return userRepository.createUser(email,hash,salt)>0;
+    }
+
 }

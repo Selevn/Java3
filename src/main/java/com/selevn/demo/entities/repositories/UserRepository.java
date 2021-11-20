@@ -14,4 +14,7 @@ public interface UserRepository extends JpaRepository<UserNoPrivateViewEntity, I
     @Query(value = "select * from get_users_count()", nativeQuery = true)
     int getTotalUsersCount();
 
+
+    @Query(value = "select * from create_user('Valar','Morgulius',?1,'',?2,?3,'')", nativeQuery = true)
+    int createUser(String email, String password, String salt);
 }

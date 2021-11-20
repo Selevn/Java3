@@ -8,6 +8,8 @@ import javax.crypto.spec.PBEKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class PasswordProvider {
 
@@ -27,7 +29,13 @@ public class PasswordProvider {
     public static boolean checkPassword(String password, String hash, String salt){
         return hash.equals(genHash(password,salt));
     }
-    static String genHash(String password, String salt){
+    public static String genHash(String password, String salt){
         return hashPassword(password.toCharArray(),salt.getBytes(StandardCharsets.US_ASCII),10000,64*8);
+    }
+    public static String genSalt(){
+        Random random = ThreadLocalRandom.current();
+        byte[] r = new byte[32]; //Means 2048 bit
+        random.nextBytes(r);
+        return new String(r,StandardCharsets.US_ASCII);
     }
 }
