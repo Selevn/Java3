@@ -1,11 +1,17 @@
 package com.selevn.demo.controller;
 
+import com.selevn.demo.Service.UserService;
+import com.selevn.demo.entities.SingleUserEntity;
 import com.selevn.demo.entities.UOF;
+import com.selevn.demo.utils.jwtToken.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +20,13 @@ import static com.selevn.demo.utils.password.PasswordProvider.checkPassword;
 @Controller
 @RequestMapping(value = "/api/login",produces = MediaType.APPLICATION_JSON_VALUE)
 public class LoginController {
+
+
+    @Autowired
+    private UserService userDetailsService;
+
+    @Autowired
+    private JWTUtil tokenUtil;
 
     @Autowired
     private UOF uof;
@@ -33,12 +46,15 @@ public class LoginController {
                 var likedRecipesIds = uof.getAllUserLikedRecipesIds(user.getId());
                 var likedCookBooksIds = uof.getAllUserLikedCookBooksIds(user.getId());
 
+                final String token = tokenUtil.generateToken(user);
+                var expires = tokenUtil.getExpirationDateFromToken(token);
+
                 map.put("success", true);
                 map.put("user", user);
                 map.put("likedRecipesIds", likedRecipesIds);
                 map.put("likedCookBooksIds", likedCookBooksIds);
-                map.put("token", "Bearer");
-                map.put("expiresIn", "ExpiresIn");
+                map.put("token", "Bearer "+token);
+                map.put("expiresIn", expires.getTime());
             }
             else{
                 map.put("success", true);

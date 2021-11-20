@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,18 +46,21 @@ public class UserInteractionsController {
         map.put("success", likeResult);
         return map;
     }
-    @PostMapping(value = {"/visitItem"})
+
+    @PostMapping(value = {"/comment"})
     @ResponseBody
-    public Map<String, Object> visitItem(
+    public Map<String, Object> comment(
             @RequestBody Map<String, Object> payload
     ) {
         Map<String, Object> map = new HashMap<String, Object>();
 
-        var visitResult = uof.visitItem(
-                Integer.parseInt(payload.get("to").toString()),
-                TypeParser.parse(payload.get("type").toString())
+        //{"itemType":"RECIPE","itemId":303,"text":"ssss","date":1637438179599,"author":1}
+
+        var likeResult = uof.likeRecipe(
+                Integer.parseInt(payload.get("from").toString()),
+                Integer.parseInt(payload.get("to").toString())
         );
-        map.put("success", visitResult);
+        map.put("success", likeResult);
         return map;
     }
 }
