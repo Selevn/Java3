@@ -3,10 +3,12 @@ package com.selevn.demo.entities;
 
 import com.selevn.demo.entities.repositories.*;
 import com.selevn.demo.entities.wrapper.EntityWrapper;
+import com.selevn.demo.utils.ItemType;
 import com.selevn.demo.utils.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -228,5 +230,13 @@ public class UOF {
     public List<Integer> getAllUserLikedCookBooksIds(Integer id){
         return cookBooksRepository.getAllUserLikedCookbooks(id).stream().map(CookbooksViewEntity::getId).collect(Collectors.toList());
     }
-
+    public boolean addComment(Integer type, Integer userId, Integer itemId, String text){
+        if(type == ItemType.RECIPE.getNumVal())
+        {
+            commentsRepository.addRecipeComment(userId,itemId,new Date(),text);
+        } else if(type == ItemType.COOKBOOK.getNumVal()){
+            commentsRepository.addCookBookComment(userId,itemId,new Date(),text);
+        }
+        return true;
+    }
 }

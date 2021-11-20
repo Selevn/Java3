@@ -3,9 +3,9 @@ package com.selevn.demo.utils;
 public class TypeParser {
     public static int parse(String type){
         if(type.equals("RECIPE"))
-            return 0;
+            return ItemType.RECIPE.getNumVal();
         if(type.equals("COOKBOOK"))
-            return 1;
+            return ItemType.COOKBOOK.getNumVal();
         return -1;
     }
 }
