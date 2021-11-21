@@ -1,5 +1,6 @@
 package com.selevn.demo.controller;
 
+import com.selevn.demo.BLL.domains.entities.CookBook;
 import com.selevn.demo.forms.AppForm;
 import com.selevn.demo.forms.DeleteForm;
 import com.selevn.demo.forms.EditForm;
@@ -10,14 +11,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import com.selevn.demo.BLL.domains.services.Get_cookBook_service;
+
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
 @RequestMapping
 public class AppController {
+    /*@Autowired
+    public UserService userService;*/
+
     private static List<App> apps = new ArrayList<App>();
 
     static {
@@ -41,6 +49,7 @@ public class AppController {
         modelAndView.setViewName("index");
         model.addAttribute("message", message);
         log.info("/index was called");
+        //System.out.println(userService.(3).getFirstName());
         return modelAndView;
     }
 
