@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 
@@ -73,4 +74,23 @@ public interface CookBooksRepository extends JpaRepository<CookbooksViewEntity, 
 
     @Query(value = "select * from get_all_user_liked_cookbooks(?1)", nativeQuery = true)
     List<CookbooksViewEntity> getAllUserLikedCookbooks(Integer userid);
+
+    @Query(value = "select * from create_cookbook(?1,?2,CAST(?3 as varbit),?4,?5,?6,?7)", nativeQuery = true)
+    int createCookbook(
+            Integer views,
+            String image,
+            String filters,
+            Date creation_date,
+            Integer author,
+            String name,
+            String desc
+    );
+
+    @Transactional
+    @Modifying
+    @Query(value = "call add_recipes_to_cookbook(?1, CAST(?2 as integer[]))", nativeQuery = true)
+    void addRecipesToCookbook(
+            Integer book,
+            String recipes
+    );
 }

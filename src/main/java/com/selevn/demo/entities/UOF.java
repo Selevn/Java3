@@ -8,6 +8,7 @@ import com.selevn.demo.utils.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,7 +52,6 @@ public class UOF {
         StringBuilder filters = new StringBuilder();
 
         filters.append('b');
-
         if(vegeterian == null || vegeterian == false)
             filters.append(0);
         else
@@ -244,4 +244,27 @@ public class UOF {
         return userRepository.createUser(email,hash,salt)>0;
     }
 
+    public int createCookbook(String image,String filters,Integer authorId, String name, String desc){
+        return cookBooksRepository.createCookbook(
+                0,
+                image,
+                filters,
+                new Date(),
+                authorId,
+                name,
+                desc
+        );
+    }
+
+    public void addRecipesToBook(Integer bookId, ArrayList<Integer> ids){
+        StringBuilder strBldr = new StringBuilder();
+        strBldr.append("{");
+        for (int i = 0; i < ids.stream().count()-1; i++) {
+            strBldr.append(ids.get(i).toString());
+            strBldr.append(',');
+        }
+        strBldr.append(ids.stream().count());
+        strBldr.append("}");
+        cookBooksRepository.addRecipesToCookbook(bookId, strBldr.toString());
+    }
 }
