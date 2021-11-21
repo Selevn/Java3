@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 
@@ -73,4 +74,18 @@ public interface RecipesRepository extends JpaRepository<RecipesViewEntity, Inte
 
     @Query(value = "select * from get_all_user_liked_recipes(?1)", nativeQuery = true)
     List<RecipesViewEntity> getAllUserLikedRecipes(Integer userid);
+
+    //create_recipe(integer, character varying, integer, unknown, integer, character varying, character varying, character varying, character varying)
+    @Query(value = "select * from create_recipe(?1,?2,?3,CAST(?4 as date),?5,?6,?7,CAST(?8 as json),CAST(?9 as json))", nativeQuery = true)
+    int createRecipe(
+            Integer views,
+            String image,
+            Integer cookTime,
+            Date creation_date,
+            Integer author,
+            String name,
+            String desc,
+            String _ingredients,
+            String _directions
+    );
 }

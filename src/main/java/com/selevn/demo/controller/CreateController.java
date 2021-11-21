@@ -38,20 +38,9 @@ public class CreateController {
     @Autowired
     private UOF uof;
 
-    /*@PostMapping(value = {"/newCookBook"}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @ResponseBody
-    public Map<String, Object> newCookbook(
-
-    ) {
-        Map<String, Object> map = new HashMap<String, Object>();
-
-        //email approvement!
-        map.put("success", "success");
-        return map;
-    }*/
     @PostMapping(path = "/newCookBook", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
     @ResponseBody
-    public Map<String, Object> saveEmployee(
+    public Map<String, Object> newCookBook(
             @RequestParam("image") MultipartFile image,
             @RequestParam("author") String author,
             @RequestParam("name") String name,
@@ -108,4 +97,46 @@ public class CreateController {
         map.put("id", id);
         return map;
     }
+    @PostMapping(path = "/newRecipe", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
+    @ResponseBody
+    public Map<String, Object> newRecipe(
+            @RequestParam("image") MultipartFile image,
+            @RequestParam("author") String author,
+            @RequestParam("name") String name,
+            @RequestParam("desc") String desc,
+            @RequestParam("creationDate") String creationDate,
+            @RequestParam("directions") String directions,
+            @RequestParam("cookTime") Integer cookTime,
+            @RequestParam("ingredients") String ingredients
+    ) throws IOException {
+        File conver = new File("/Users/selevn/3kurs/Ptsei/files/"+image.getOriginalFilename());
+        conver.createNewFile();
+        try (FileOutputStream fout = new FileOutputStream(conver)){
+            fout.write(image.getBytes());
+        } catch (Exception e){
+            //e.printStackTrace();
+        }
+
+        CloudinaryUploadService service = CloudinaryUploadService.getInstance();
+        CloudinaryOutput data = service.loadImage("/Users/selevn/3kurs/Ptsei/files/"+image.getOriginalFilename());
+        var id = uof.createRecipe(
+                data.getUrl(),
+                cookTime,
+                Integer.parseInt(author),
+                name,
+                desc,
+                directions,
+                ingredients
+        );
+
+
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        //email approvement!
+        map.put("success", true);
+        map.put("id", id);
+        return map;
+    }
 }
+
+

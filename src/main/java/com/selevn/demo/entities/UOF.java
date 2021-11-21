@@ -255,6 +255,19 @@ public class UOF {
                 desc
         );
     }
+    public int createRecipe(String image,Integer cookTime,Integer authorId, String name, String desc,String directions, String ingredients){
+        return recipesRepository.createRecipe(
+                0,
+                image,
+                cookTime,
+                new Date(),
+                authorId,
+                name,
+                desc,
+                directions,
+                ingredients
+        );
+    }
 
     public void addRecipesToBook(Integer bookId, ArrayList<Integer> ids){
         StringBuilder strBldr = new StringBuilder();
