@@ -270,6 +270,8 @@ public class UOF {
     }
 
     public void addRecipesToBook(Integer bookId, ArrayList<Integer> ids){
+        if(ids.size() == 0)
+            return;
         StringBuilder strBldr = new StringBuilder();
         strBldr.append("{");
         for (int i = 0; i < ids.stream().count()-1; i++) {

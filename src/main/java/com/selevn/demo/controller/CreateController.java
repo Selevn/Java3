@@ -4,6 +4,7 @@ import com.selevn.demo.Service.CloudinaryOutput;
 import com.selevn.demo.Service.CloudinaryUploadService;
 import com.selevn.demo.Service.UserService;
 import com.selevn.demo.entities.UOF;
+import com.selevn.demo.exceptions.ApiRequestException;
 import com.selevn.demo.utils.jwtToken.JWTUtil;
 
 import org.json.JSONArray;
@@ -49,58 +50,62 @@ public class CreateController {
             @RequestParam("name") String name,
             @RequestParam("desc") String desc,
             @RequestParam("recipesIds") String recipesIds,
-            @RequestParam("creationDate") String creationDate,
             @RequestParam("filters") String filters
             ) throws IOException, JSONException {
-        File conver = new File("/Users/selevn/3kurs/Ptsei/files/"+image.getOriginalFilename());
-        conver.createNewFile();
-        try (FileOutputStream fout = new FileOutputStream(conver)){
+        try {
+            File conver = new File("/Users/selevn/3kurs/Ptsei/files/" + image.getOriginalFilename());
+            conver.createNewFile();
+            try (FileOutputStream fout = new FileOutputStream(conver)) {
                 fout.write(image.getBytes());
+            } catch (Exception e) {
+                logger.warn("file stream error");
+                //e.printStackTrace();
+            }
+
+            char[] byteFilter = new char[4];
+            byteFilter[0] = 'b';
+            byteFilter[1] = '0';
+            byteFilter[2] = '0';
+            byteFilter[3] = '0';
+            JSONArray jsonFilters = new JSONArray(filters);
+            for (int i = 0; i < jsonFilters.length(); i++) {
+                if (jsonFilters.getString(i).equals("vegeterian"))
+                    byteFilter[1] = '1';
+                if (jsonFilters.getString(i).equals("noMilk"))
+                    byteFilter[2] = '1';
+                if (jsonFilters.getString(i).equals("noEggs"))
+                    byteFilter[3] = '1';
+            }
+
+            ArrayList<Integer> ids = new ArrayList<Integer>();
+            JSONArray recipes = new JSONArray(recipesIds);
+            for (int i = 0; i < recipes.length(); i++) {
+                ids.add(recipes.getInt(i));
+            }
+
+            CloudinaryUploadService service = CloudinaryUploadService.getInstance();
+            CloudinaryOutput data = service.loadImage("/Users/selevn/3kurs/Ptsei/files/" + image.getOriginalFilename());
+            var id = uof.createCookbook(
+                    data.getUrl(),
+                    new String(byteFilter),
+                    Integer.parseInt(author),
+                    name,
+                    desc
+            );
+
+            uof.addRecipesToBook(id, ids);
+
+            Map<String, Object> map = new HashMap<String, Object>();
+
+            //email approvement!
+            logger.info("Create new cookbook success");
+            map.put("success", true);
+            map.put("id", id);
+            return map;
         } catch (Exception e){
-            logger.warn("file stream error");
-            //e.printStackTrace();
+            logger.info("Create new cookbook exception");
+            throw new ApiRequestException("It probably can be mistake in param types. Please, see documentation.");
         }
-
-        char[] byteFilter = new char[4];
-        byteFilter[0] = 'b';
-        byteFilter[1] = '0';
-        byteFilter[2] = '0';
-        byteFilter[3] = '0';
-        JSONArray jsonFilters = new JSONArray(filters);
-        for (int i = 0; i < jsonFilters.length(); i++) {
-            if(jsonFilters.getString(i).equals("vegeterian"))
-                byteFilter[1] = '1';
-            if(jsonFilters.getString(i).equals("noMilk"))
-                byteFilter[2] = '1';
-            if(jsonFilters.getString(i).equals("noEggs"))
-                byteFilter[3] = '1';
-        }
-
-        ArrayList<Integer> ids = new ArrayList<Integer>();
-        JSONArray recipes = new JSONArray(recipesIds);
-        for (int i = 0; i < recipes.length(); i++) {
-            ids.add(recipes.getInt(i));
-        }
-
-        CloudinaryUploadService service = CloudinaryUploadService.getInstance();
-        CloudinaryOutput data = service.loadImage("/Users/selevn/3kurs/Ptsei/files/"+image.getOriginalFilename());
-        var id = uof.createCookbook(
-            data.getUrl(),
-            new String(byteFilter),
-            Integer.parseInt(author),
-            name,
-            desc
-        );
-
-        uof.addRecipesToBook(id, ids);
-
-        Map<String, Object> map = new HashMap<String, Object>();
-
-        //email approvement!
-        logger.warn("Create new cookbook success");
-        map.put("success", true);
-        map.put("id", id);
-        return map;
     }
     @PostMapping(path = "/newRecipe", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
     @ResponseBody
