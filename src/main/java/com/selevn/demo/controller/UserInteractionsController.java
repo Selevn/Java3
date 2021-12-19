@@ -5,14 +5,19 @@ import com.selevn.demo.controller.userInput.LikeItem;
 import com.selevn.demo.controller.userInput.VisitItem;
 import com.selevn.demo.controller.userOutput.SuccessResult;
 import com.selevn.demo.entities.UOF;
+import com.selevn.demo.exceptions.ApiRequestException;
 import com.selevn.demo.utils.TypeParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,8 +70,24 @@ public class UserInteractionsController {
                     description = "Item to visit",
                     required = true
             )
-                    @RequestBody VisitItem item
+                    @RequestBody @Valid VisitItem item, BindingResult bindingResult
     ) {
+        if(bindingResult.hasErrors()){
+            for (Object object : bindingResult.getAllErrors()) {
+                if(object instanceof FieldError) {
+                    FieldError fieldError = (FieldError) object;
+                    logger.info(fieldError.getCode());
+
+                    throw new ApiRequestException(fieldError.getDefaultMessage());
+                }
+
+                if(object instanceof ObjectError) {
+                    ObjectError objectError = (ObjectError) object;
+                    logger.info(objectError.getCode());
+                    throw new ApiRequestException(objectError.getDefaultMessage());
+                }
+            }
+        }
         Map<String, Object> map = new HashMap<String, Object>();
 
         var visitResult = uof.visitItem(

@@ -1,11 +1,19 @@
 package com.selevn.demo.controller.userInput;
 
 import com.selevn.demo.utils.TypeParser;
+import com.selevn.demo.validators.TypeValidation;
 
-import java.util.Map;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 public class VisitItem {
+    @NotNull(message="Id must be filled")
+    @Positive(message="Id must be positive")
     private Integer to;
+
+    @NotEmpty(message="Type must be filled")
+    @TypeValidation(message = "Incorrect type")
     private String type;
 
     public Integer getTo() {
