@@ -10,6 +10,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,7 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/api/create",produces = MediaType.APPLICATION_JSON_VALUE)
 public class CreateController {
+    Logger logger = LoggerFactory.getLogger(CreateController.class);
 
 
     @Autowired
@@ -54,6 +57,7 @@ public class CreateController {
         try (FileOutputStream fout = new FileOutputStream(conver)){
                 fout.write(image.getBytes());
         } catch (Exception e){
+            logger.warn("file stream error");
             //e.printStackTrace();
         }
 
@@ -93,6 +97,7 @@ public class CreateController {
         Map<String, Object> map = new HashMap<String, Object>();
 
         //email approvement!
+        logger.warn("Create new cookbook success");
         map.put("success", true);
         map.put("id", id);
         return map;
@@ -133,6 +138,7 @@ public class CreateController {
         Map<String, Object> map = new HashMap<String, Object>();
 
         //email approvement!
+        logger.warn("Create new recipe success");
         map.put("success", true);
         map.put("id", id);
         return map;

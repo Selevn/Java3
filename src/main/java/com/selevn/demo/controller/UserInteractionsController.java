@@ -2,6 +2,8 @@ package com.selevn.demo.controller;
 
 import com.selevn.demo.entities.UOF;
 import com.selevn.demo.utils.TypeParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,8 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/api/userInteractions",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class UserInteractionsController {
+
+    Logger logger = LoggerFactory.getLogger(UserInteractionsController.class);
 
     @Autowired
     private UOF uof;
@@ -28,6 +32,7 @@ public class UserInteractionsController {
                 Integer.parseInt(payload.get("from").toString()),
                 Integer.parseInt(payload.get("to").toString()));
         map.put("success", likeResult);
+        logger.info("likeCookBook success "+likeResult);
         return map;
     }
 
@@ -43,6 +48,8 @@ public class UserInteractionsController {
                 Integer.parseInt(payload.get("to").toString())
         );
         map.put("success", likeResult);
+        logger.info("likeRecipe success "+likeResult);
+
         return map;
     }
     @PostMapping(value = {"/visitItem"})
@@ -57,6 +64,8 @@ public class UserInteractionsController {
                 TypeParser.parse(payload.get("type").toString())
         );
         map.put("success", visitResult);
+        logger.info("visitItem success "+visitResult);
+
         return map;
     }
 
@@ -73,6 +82,8 @@ public class UserInteractionsController {
                 Integer.parseInt(payload.get("itemId").toString()),
                 payload.get("text").toString()
         );
+        logger.info("comment success "+result);
+
         map.put("success", result);
         return map;
     }

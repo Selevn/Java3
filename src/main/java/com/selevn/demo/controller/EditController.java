@@ -8,6 +8,8 @@ import com.selevn.demo.entities.UOF;
 import com.selevn.demo.utils.jwtToken.JWTUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,8 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/api/edit",produces = MediaType.APPLICATION_JSON_VALUE)
 public class EditController {
+
+    Logger logger = LoggerFactory.getLogger(EditController.class);
 
 
     @Autowired
@@ -106,6 +110,7 @@ public class EditController {
         Map<String, Object> map = new HashMap<String, Object>();
 
         //email approvement!
+        logger.info("Cookbook Edited");
         map.put("success", true);
         map.put("id", _id);
         return map;
@@ -159,6 +164,8 @@ public class EditController {
         Map<String, Object> map = new HashMap<String, Object>();
 
         //email approvement!
+        logger.info("Recipe Edited");
+
         map.put("success", true);
         map.put("id", intId);
         return map;

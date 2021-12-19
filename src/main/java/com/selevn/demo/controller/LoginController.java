@@ -4,6 +4,8 @@ import com.selevn.demo.Service.UserService;
 import com.selevn.demo.entities.SingleUserEntity;
 import com.selevn.demo.entities.UOF;
 import com.selevn.demo.utils.jwtToken.JWTUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,6 +23,7 @@ import static com.selevn.demo.utils.password.PasswordProvider.checkPassword;
 @RequestMapping(value = "/api/login",produces = MediaType.APPLICATION_JSON_VALUE)
 public class LoginController {
 
+    Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     private UserService userDetailsService;
@@ -55,13 +58,16 @@ public class LoginController {
                 map.put("likedCookBooksIds", likedCookBooksIds);
                 map.put("token", "Bearer "+token);
                 map.put("expiresIn", expires.getTime());
+                logger.info("Loging trying success");
             }
             else{
-                map.put("success", true);
+                logger.info("Loging trying failed: password incorrect");
+                map.put("success", false);
                 map.put("message", "No user with this credentials");
             }
             return map;
         }
+        logger.info("Loging trying failed: no such user");
         map.put("success", false);
         map.put("message", "No user with this credentials");
         return map;

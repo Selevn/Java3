@@ -5,6 +5,8 @@ import com.selevn.demo.Service.UserService;
 import com.selevn.demo.config.EmailConfig;
 import com.selevn.demo.entities.UOF;
 import com.selevn.demo.utils.jwtToken.JWTUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mail.SimpleMailMessage;
@@ -25,6 +27,7 @@ import static com.selevn.demo.utils.password.PasswordProvider.*;
 @RequestMapping(value = "/api/login",produces = MediaType.APPLICATION_JSON_VALUE)
 public class RegisterController {
 
+    Logger logger = LoggerFactory.getLogger(RegisterController.class);
 
     @Autowired
     private UserService userDetailsService;
@@ -47,14 +50,19 @@ public class RegisterController {
         var email = payload.get("email").toString();
         var password = payload.get("password").toString();
         var user = uof.getUserForLogin(email);
-        if(user != null)
+        if(user != null){
+            logger.info("Register failed: user exists");
             throw new ValidationException("Such user exists");
+        }
         String salt = genSalt();
         String hashedPassword = genHash(password, salt);
         boolean success = uof.createUser(email,hashedPassword,salt);
         //email approvement!
         if(success)
+        {
+            logger.info("Register failed");
             mailSender.sendMail(email, "Welcome to FedMe!", "Thank you for registration on our portal!");
+        }
         map.put("success", success);
         return map;
     }
