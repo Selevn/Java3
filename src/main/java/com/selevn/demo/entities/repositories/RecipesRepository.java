@@ -88,4 +88,18 @@ public interface RecipesRepository extends JpaRepository<RecipesViewEntity, Inte
             String _ingredients,
             String _directions
     );
+
+    @Transactional
+    @Modifying
+    @Query(value = "call update_recipe(?1,?2,?3,?4,?5,?6,CAST(?7 as json),CAST(?8 as json))", nativeQuery = true)
+    int editRecipe(
+            Integer id,
+            String image,
+            Integer cookTime,
+            Integer author,
+            String name,
+            String desc,
+            String _ingredients,
+            String _directions
+    );
 }

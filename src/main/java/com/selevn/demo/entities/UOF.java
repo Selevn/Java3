@@ -280,4 +280,26 @@ public class UOF {
         strBldr.append("}");
         cookBooksRepository.addRecipesToCookbook(bookId, strBldr.toString());
     }
+    public int editCookBook(Integer id, String image,String filters,Integer authorId, String name, String desc){
+        return cookBooksRepository.editCookBook(
+                id,
+                image,
+                filters,
+                authorId,
+                name,
+                desc
+        );
+    }
+    public int editRecipe(Integer id, String image,Integer cookTime,Integer authorId, String name, String desc,String directions, String ingredients){
+        return recipesRepository.editRecipe(
+                id,
+                image,
+                cookTime,
+                authorId,
+                name,
+                desc,
+                directions,
+                ingredients
+        );
+    }
 }
