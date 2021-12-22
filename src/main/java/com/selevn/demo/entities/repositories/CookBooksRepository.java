@@ -88,6 +88,18 @@ public interface CookBooksRepository extends JpaRepository<CookbooksViewEntity, 
 
     @Transactional
     @Modifying
+    @Query(value = "call update_cookbook(?1,?2,CAST(?3 as varbit),?4,?5,?6)", nativeQuery = true)
+    int editCookBook(
+            Integer id,
+            String image,
+            String filters,
+            Integer author,
+            String name,
+            String desc
+    );
+
+    @Transactional
+    @Modifying
     @Query(value = "call add_recipes_to_cookbook(?1, CAST(?2 as integer[]))", nativeQuery = true)
     void addRecipesToCookbook(
             Integer book,

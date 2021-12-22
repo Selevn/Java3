@@ -1,12 +1,23 @@
 package com.selevn.demo.controller;
 
+import com.selevn.demo.controller.userInput.CreateComment;
+import com.selevn.demo.controller.userInput.LikeItem;
+import com.selevn.demo.controller.userInput.VisitItem;
+import com.selevn.demo.controller.userOutput.SuccessResult;
 import com.selevn.demo.entities.UOF;
+import com.selevn.demo.exceptions.ApiRequestException;
 import com.selevn.demo.utils.TypeParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,66 +25,96 @@ import java.util.Map;
 @RequestMapping(value = "/api/userInteractions",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class UserInteractionsController {
 
+    Logger logger = LoggerFactory.getLogger(UserInteractionsController.class);
+
     @Autowired
     private UOF uof;
 
     @PostMapping(value = {"/likeCookBook"})
     @ResponseBody
-    public Map<String, Object> likeCookBook(
-            @RequestBody Map<String, Object> payload
+    public SuccessResult likeCookBook(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Like cookbook",
+                    required = true
+            )
+            @RequestBody LikeItem item
     ) {
-        Map<String, Object> map = new HashMap<String, Object>();
-
         var likeResult = uof.likeCookBook(
-                Integer.parseInt(payload.get("from").toString()),
-                Integer.parseInt(payload.get("to").toString()));
-        map.put("success", likeResult);
-        return map;
+                item.getFrom(),
+                item.getTo());
+
+        logger.info("likeCookBook success "+likeResult);
+        return new SuccessResult(likeResult);
     }
 
     @PostMapping(value = {"/likeRecipe"})
     @ResponseBody
-    public Map<String, Object> likeRecipe(
-            @RequestBody Map<String, Object> payload
+    public SuccessResult likeRecipe(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Like recipe",
+                    required = true
+            )
+            @RequestBody LikeItem item
     ) {
-        Map<String, Object> map = new HashMap<String, Object>();
-
         var likeResult = uof.likeRecipe(
-                Integer.parseInt(payload.get("from").toString()),
-                Integer.parseInt(payload.get("to").toString())
-        );
-        map.put("success", likeResult);
-        return map;
+               item.getFrom(),
+                item.getTo());
+
+        logger.info("likeRecipe success "+likeResult);
+        return new SuccessResult(likeResult);
     }
     @PostMapping(value = {"/visitItem"})
     @ResponseBody
-    public Map<String, Object> visitItem(
-            @RequestBody Map<String, Object> payload
+    public SuccessResult visitItem(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Item to visit",
+                    required = true
+            )
+                    @RequestBody @Valid VisitItem item, BindingResult bindingResult
     ) {
+        if(bindingResult.hasErrors()){
+            for (Object object : bindingResult.getAllErrors()) {
+                if(object instanceof FieldError) {
+                    FieldError fieldError = (FieldError) object;
+                    logger.info(fieldError.getCode());
+
+                    throw new ApiRequestException(fieldError.getDefaultMessage());
+                }
+
+                if(object instanceof ObjectError) {
+                    ObjectError objectError = (ObjectError) object;
+                    logger.info(objectError.getCode());
+                    throw new ApiRequestException(objectError.getDefaultMessage());
+                }
+            }
+        }
         Map<String, Object> map = new HashMap<String, Object>();
 
         var visitResult = uof.visitItem(
-                Integer.parseInt(payload.get("to").toString()),
-                TypeParser.parse(payload.get("type").toString())
+                item.getTo(),
+                item.getTypeParsed()
         );
-        map.put("success", visitResult);
-        return map;
+        logger.info("visitItem success "+visitResult);
+
+        return new SuccessResult(visitResult);
     }
 
     @PostMapping(value = {"/comment"})
     @ResponseBody
-    public Map<String, Object> comment(
-            @RequestBody Map<String, Object> payload
+    public SuccessResult comment(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Item to comment",
+                    required = true
+            )
+            @RequestBody CreateComment item
     ) {
-        Map<String, Object> map = new HashMap<String, Object>();
-
         var result= uof.addComment(
-                TypeParser.parse(payload.get("itemType").toString()),
-                Integer.parseInt(payload.get("author").toString()),
-                Integer.parseInt(payload.get("itemId").toString()),
-                payload.get("text").toString()
+                item.parseType(),
+                item.getAuthor(),
+                item.getItemId(),
+                item.getText()
         );
-        map.put("success", result);
-        return map;
+        logger.info("comment success "+result);
+        return new SuccessResult(result);
     }
 }
