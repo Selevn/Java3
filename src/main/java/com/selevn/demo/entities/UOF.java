@@ -1,6 +1,7 @@
 package com.selevn.demo.entities;
 
 
+import com.selevn.demo.AOP.LogAnnotation;
 import com.selevn.demo.entities.repositories.*;
 import com.selevn.demo.entities.wrapper.EntityWrapper;
 import com.selevn.demo.utils.ItemType;
@@ -199,6 +200,8 @@ public class UOF {
             return false;
         }
     }
+
+    @LogAnnotation
     public boolean visitItem(Integer itemId, Integer type){
         try{
         if(type == 0)

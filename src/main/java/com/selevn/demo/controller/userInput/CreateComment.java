@@ -3,20 +3,20 @@ package com.selevn.demo.controller.userInput;
 import com.selevn.demo.utils.TypeParser;
 
 public class CreateComment {
-    private String type;
+    private String itemType;
     private Integer author;
     private Integer itemId;
     private String text;
 
-    public String getType() {
-        return type;
+    public String getItemType() {
+        return itemType;
     }
     public Integer parseType(){
-        return TypeParser.parse(this.type);
+        return TypeParser.parse(this.itemType);
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setItemType(String itemType) {
+        this.itemType = itemType;
     }
 
     public Integer getAuthor() {
