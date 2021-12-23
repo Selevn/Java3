@@ -24,6 +24,12 @@ public class AdminThingsController {
         Map<String, Object> map = new HashMap<String, Object>();
         try{
             map.put("success",uof.deleteUser(Integer.parseInt(userId)));
+
+            if(uof.getUser(Integer.parseInt(userId)) == null){
+                map.put("success", false);
+                return map;
+            }
+
         } catch (Exception e){
             map.put("success", false);
         }
@@ -36,6 +42,11 @@ public class AdminThingsController {
     ) {
         Map<String, Object> map = new HashMap<String, Object>();
         try{
+            if(uof.getSingleCookBook(Integer.parseInt(userId)) == null){
+                map.put("success", false);
+                return map;
+            }
+
             map.put("success",uof.deleteBook(Integer.parseInt(userId)));
         } catch (Exception e){
             map.put("success", false);
@@ -49,6 +60,10 @@ public class AdminThingsController {
     ) {
         Map<String, Object> map = new HashMap<String, Object>();
         try{
+            if(uof.getSingleRecipe(Integer.parseInt(userId)) == null){
+                map.put("success", false);
+                return map;
+            }
             map.put("success",uof.deleteRecipe(Integer.parseInt(userId)));
         } catch (Exception e){
             map.put("success", false);
