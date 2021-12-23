@@ -23,7 +23,12 @@ public class CheckController {
     public String checkProfile(
             @RequestParam(required = false) Integer id
     ) {
-        var count = uof.getTotalUsersCount();
+        var count = uof.getUser(id);
+        if(count != null)
+            return "Ok";
+        throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "Not ok"
+        );/*
         if(count >= id){
             return "Ok";
         }
@@ -31,7 +36,7 @@ public class CheckController {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Not ok"
             );
-        }
+        }*/
     }
 
     @GetMapping(value = {"/cookbook"})
@@ -39,6 +44,12 @@ public class CheckController {
     public String checkCookBook(
             @RequestParam(required = false) Integer id
     ) {
+        var count = uof.getSingleCookBook(id);
+        if(count != null)
+            return "Ok";
+        throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "Not ok"
+        );/*
         var count = uof.getTotalCookBooksCount();
         if(count >= id){
             return "Ok";
@@ -47,7 +58,7 @@ public class CheckController {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Not ok"
             );
-        }
+        }*/
     }
 
     @GetMapping(value = {"/recipe"})
@@ -55,6 +66,13 @@ public class CheckController {
     public String checkRecipe(
             @RequestParam(required = false) Integer id
     ) {
+        var count = uof.getSingleRecipe(id);
+        if(count != null)
+            return "Ok";
+        throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "Not ok"
+        );
+        /*
         var count = uof.getTotalRecipesCount();
         if(count >= id){
             return "Ok";
@@ -63,7 +81,7 @@ public class CheckController {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Not ok"
             );
-        }
+        }*/
     }
 
 }

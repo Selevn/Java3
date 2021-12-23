@@ -102,4 +102,13 @@ public interface RecipesRepository extends JpaRepository<RecipesViewEntity, Inte
             String _ingredients,
             String _directions
     );
+
+    @Transactional
+    @Modifying
+    @Query(value = "call deleterecipe(?1)", nativeQuery = true)
+    int delete_recipe(
+            Integer id
+    );
+
+
 }

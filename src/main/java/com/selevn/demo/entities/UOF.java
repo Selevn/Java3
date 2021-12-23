@@ -307,4 +307,44 @@ public class UOF {
                 ingredients
         );
     }
+
+    public boolean deleteUser(Integer id){
+        try{
+            userRepository.deleteById(
+                    id
+            );
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+        finally {
+            return true;
+        }
+    }
+    public boolean deleteBook(Integer id){
+        try{
+            cookBooksRepository.delete_cookbook(
+                    id
+            );
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+        finally {
+            return true;
+        }
+    }
+    public boolean deleteRecipe(Integer id){
+        try{
+            recipesRepository.delete_recipe(
+                    id
+            );
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+        finally {
+            return true;
+        }
+    }
 }

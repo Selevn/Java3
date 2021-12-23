@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class JwtFilter extends OncePerRequestFilter {
+public class JwtAdminFilter extends OncePerRequestFilter {
 
     @Autowired
     private JWTUtil jwtUtility;
@@ -29,15 +29,14 @@ public class JwtFilter extends OncePerRequestFilter {
         String authorization = httpServletRequest.getHeader("Authorization");
         String token = null;
         String userName = null;
-        Integer id;
+        Integer id = 0;
 
         if(null != authorization && authorization.startsWith("Bearer ")) {
             token = authorization.substring(7);
             userName = jwtUtility.extractUsername(token);
             id = Integer.parseInt(jwtUtility.extractId(token));
         }
-
-        if(null != userName && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if(id==1 && null != userName && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails
                     = userService.loadUserByUsername(userName);
 

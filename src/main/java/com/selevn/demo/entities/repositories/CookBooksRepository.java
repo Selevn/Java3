@@ -105,4 +105,12 @@ public interface CookBooksRepository extends JpaRepository<CookbooksViewEntity, 
             Integer book,
             String recipes
     );
+
+    @Transactional
+    @Modifying
+    @Query(value = "call deletecookbook(?1)", nativeQuery = true)
+    void delete_cookbook(
+            Integer book
+    );
+
 }
